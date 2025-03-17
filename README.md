@@ -54,7 +54,7 @@ pip install pyserial
 ### Basic Example
 
 ```python
-from feetech_servo import FeetechServo
+from feetech import FeetechServo
 
 # Initialize the servo driver
 servo = FeetechServo(port='/dev/ttyUSB0', baud_rate=115200, debug=True)
@@ -132,6 +132,14 @@ servo.write_position(servo_id=1, position=1500)
 ```
 
 - `position`: Target position (0–4095 or as per servo limits).
+
+#### Set Goal Speed
+
+```python
+servo.set_speed(servo_id=1, speed=1500)
+```
+
+- `speed`: Target speed (0–4095 or as per servo limits).
 
 #### Read Current Position
 

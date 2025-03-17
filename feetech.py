@@ -6,7 +6,9 @@ ADDR_PING = 0  # Address for ping command
 ADDR_MODEL_NUMBER = 3  # Address for model number
 ADDR_SCS_TORQUE_ENABLE = 40
 ADDR_SCS_GOAL_POSITION = 42
+ADDR_SCS_GOAL_SPEED    = 46
 ADDR_SCS_PRESENT_POSITION = 56
+ADDR_PRESENT_SPEED = 58
 ADDR_PRESENT_LOAD = 60
 ADDR_PRESENT_VOLTAGE = 62
 ADDR_PRESENT_TEMPERATURE = 63
@@ -91,14 +93,16 @@ class FeetechServo:
         Enable or disable torque on the servo.
         """
         data = [1 if enable else 0]  # 1 to enable, 0 to disable
-        return self._send_packet(servo_id, instruction=0x03, address=ADDR_SCS_TORQUE_ENABLE, data=data)
+        enable_response = self._send_packet(servo_id, instruction=0x03, address=ADDR_SCS_TORQUE_ENABLE, data=data)
+        return enable if enable_response is not None else None
 
     def write_position(self, servo_id, position):
         """
         Set the goal position of the servo.
         """
         data = [position & 0xFF, (position >> 8) & 0xFF]  # Convert position to 2 bytes (little-endian)
-        return self._send_packet(servo_id, instruction=0x03, address=ADDR_SCS_GOAL_POSITION, data=data)
+        position_result = self._send_packet(servo_id, instruction=0x03, address=ADDR_SCS_GOAL_POSITION, data=data)
+        return position if position_result is not None else None
 
     def read_position(self, servo_id):
         """
@@ -123,6 +127,20 @@ class FeetechServo:
         Read the current temperature of the servo.
         """
         return self._send_packet(servo_id, instruction=0x02, address=ADDR_PRESENT_TEMPERATURE, read_length=1)
+    
+    def set_speed(self, servo_id, speed):
+        """
+        Set the goal speed of the servo.
+        """
+        data = [speed & 0xFF, (speed >> 8) & 0xFF]  # Convert speed to 2 bytes (little-endian)
+        speed_result = self._send_packet(servo_id, instruction=0x03, address=ADDR_SCS_GOAL_SPEED, data=data)
+        return speed if speed_result is not None else None
+
+    def read_speed(self, servo_id):
+        """
+        Read the current speed of the servo.
+        """
+        return self._send_packet(servo_id, instruction=0x02, address=ADDR_PRESENT_SPEED, read_length=2)
 
     def close(self):
         """
@@ -133,7 +151,7 @@ class FeetechServo:
 
 if __name__ == "__main__":
     # Example usage with debug enabled
-    servo = FeetechServo(port='/dev/cu.wchusbserial1120', baud_rate=115200, debug=True)
+    servo = FeetechServo(port='/dev/cu.wchusbserial1120', baud_rate=115200, debug=False)
 
     try:
         # Ping the servo
@@ -147,6 +165,10 @@ if __name__ == "__main__":
         # Enable torque
         result = servo.enable_torque(servo_id=1, enable=True)
         print(f"Enabled torque: {result}")
+
+        # Set speed to 1000
+        result = servo.set_speed(servo_id=1, speed=1000)
+        print(f"Set speed: {result}")
 
         # Move to position 1500
         result = servo.write_position(servo_id=1, position=1500)
