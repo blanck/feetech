@@ -184,7 +184,10 @@ if __name__ == "__main__":
 
         # Read voltage
         voltage = servo.read_voltage(servo_id=1)
-        print(f"Current voltage: {voltage * 0.1} V")  # Voltage is returned in 0.1V units
+        if voltage:
+            print(f"Current voltage: {voltage * 0.1} V")  # Voltage is returned in 0.1V units
+        else:
+            print("Failed to read voltage")
 
         # Read temperature
         temperature = servo.read_temperature(servo_id=1)
