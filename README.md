@@ -16,7 +16,9 @@ Feel free to use, suggest missing features, or commit improvements!
 
 - **Tested Hardware**:
   - **USB-to-TTL Adapter**: Feetech FE-URT-1.
+  - **USB-to-TTL Adapter**: Waveshare Bus Servo Adapter (A).
   - **Servo Motor**: Feetech SM45BL (24V, 45kgcm, RS485 serial bus).
+  - **Servo Motor**: Waveshare ST3215 (12V, 30kgcm, TTL serial bus).
 - **Likely Compatible**: Other Feetech RS485 serial bus servos.
 
 ## Installation
@@ -26,8 +28,8 @@ Feel free to use, suggest missing features, or commit improvements!
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/blanck/feetech-servo.git
-   cd feetech-servo
+   git clone https://github.com/blanck/feetech.git
+   cd feetech
    ```
 
 2. Install the required dependencies:
@@ -45,8 +47,8 @@ pip install pyserial
 
 ### Connect Your Hardware
 
-- Connect the Feetech FE-URT-1 USB-to-TTL adapter to your computer.
-- Connect the RS485 servo(s) to the adapter.
+- Connect the Feetech FE-URT-1 or Waveshare USB-to-TTL adapter to your computer.
+- Connect the RS485/TTL servo(s) to the adapter.
 - Ensure the servo ID(s) are properly configured.
 
 ## Usage
