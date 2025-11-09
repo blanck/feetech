@@ -19,6 +19,7 @@ Feel free to use, suggest missing features, or commit improvements!
   - **USB-to-TTL Adapter**: Waveshare Bus Servo Adapter (A).
   - **Servo Motor**: Feetech SM45BL (24V, 45kgcm, RS485 serial bus).
   - **Servo Motor**: Waveshare ST3215 (12V, 30kgcm, TTL serial bus).
+  - **Servo Motor**: Feetech HLS3935M (12V, 35kgcm, TTL serial bus)
 - **Likely Compatible**: Other Feetech RS485 serial bus servos.
 
 ## Installation
@@ -100,7 +101,7 @@ servo = FeetechServo(port='/dev/ttyUSB0', baud_rate=115200, debug=False)
 ```
 
 - `port`: Serial port (e.g., `/dev/ttyUSB0` on Linux or `COM3` on Windows).
-- `baud_rate`: Baud rate (default is `115200`).
+- `baud_rate`: Baud rate (default is `115200`, or `1_000_000` for Waveshare Bus Servo Adapter).
 - `debug`: Enable debug output (default is `False`).
 
 #### Ping a Servo
@@ -142,6 +143,16 @@ servo.set_speed(servo_id=1, speed=1500)
 ```
 
 - `speed`: Target speed (0–4095 or as per servo limits).
+
+#### Set New Servo ID
+
+```python
+servo.set_new_id(servo_id=1, new_servo_id=2)
+```
+
+- `servo_id`: Current ID of the servo.
+- `new_servo_id`: New ID to assign (0–253, cannot be 254 or 255).
+- Returns `True` on success, `False` on failure. The new ID is persisted in EEPROM.
 
 #### Read Current Position
 
